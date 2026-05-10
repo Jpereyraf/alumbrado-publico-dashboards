@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard Lamparas - Region Sur</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
 :root{
   --bg:#0f1923;--surface:#162032;--card:#1c2d42;--border:#253a54;
@@ -216,7 +218,11 @@ footer{text-align:center;padding:16px;color:var(--muted);font-size:.7rem;border-
   <div class="tcard">
     <div class="trow">
       <div><span class="ttitle">Detalle por Municipio</span><span class="tsub" id="mun-count">90 municipios</span></div>
-      <input class="search" id="mun-search" placeholder="Buscar municipio..." oninput="renderMunTable()">
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+        <input class="search" id="mun-search" placeholder="Buscar municipio..." oninput="renderMunTable()">
+        <button class="btn-r" onclick="exportMunExcel()" title="Exportar a Excel" style="background:#1d6f42;padding:6px 14px;font-size:.8rem;">&#128196; Excel</button>
+        <button class="btn-r" onclick="exportMunImagen()" title="Descargar como imagen" style="background:#1e40af;padding:6px 14px;font-size:.8rem;">&#128247; Imagen</button>
+      </div>
     </div>
     <div class="tscroll"><table>
       <thead><tr>
@@ -587,7 +593,64 @@ function showTab(name,el){
   setTimeout(function(){updateCharts();},80);
 }
 
-document.addEventListener('DOMContentLoaded', function(){
+// ── EXPORT EXCEL ──
+  function exportMunExcel(){
+    var src = getMunSrc();
+    var cols = ['Municipio','Provincia','Total','OPERATIVAS','Apagada','Normalizada','Sustituida','Nueva Inst.','% Operativ.','LED','% LED'];
+    var rows = [cols];
+    src.forEach(function(m){
+      var op = m.encendida+m.normalizada+m.sustituida+m.nueva;
+      rows.push([
+        m.municipio, m.provincia, m.total, op,
+        m.apagada, m.normalizada, m.sustituida, m.nueva,
+        m.total?+(100*op/m.total).toFixed(1):0,
+        m.led,
+        m.total?+(100*m.led/m.total).toFixed(1):0
+      ]);
+    });
+    var t=src.reduce(function(a,m){
+      var op=m.encendida+m.normalizada+m.sustituida+m.nueva;
+      a.total+=m.total;a.op+=op;a.ap+=m.apagada;a.no+=m.normalizada;
+      a.su+=m.sustituida;a.nu+=m.nueva;a.led+=m.led;return a;
+    },{total:0,op:0,ap:0,no:0,su:0,nu:0,led:0});
+    rows.push(['TOTAL','',t.total,t.op,t.ap,t.no,t.su,t.nu,
+      t.total?+(100*t.op/t.total).toFixed(1):0,
+      t.led,t.total?+(100*t.led/t.total).toFixed(1):0]);
+    var ws = XLSX.utils.aoa_to_sheet(rows);
+    ws['!cols']=[{wch:28},{wch:18},{wch:9},{wch:12},{wch:10},{wch:13},{wch:13},{wch:13},{wch:12},{wch:9},{wch:9}];
+    var wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Municipios');
+    var fecha=new Date().toISOString().slice(0,10).replace(/-/g,'');
+    XLSX.writeFile(wb,'Municipios_Alumbrado_'+fecha+'.xlsx');
+  }
+
+  // ── EXPORT IMAGEN ──
+  function exportMunImagen(){
+    var el = document.getElementById('tab-municipio');
+    var btns = el.querySelectorAll('button');
+    btns.forEach(function(b){b.style.display='none';});
+    html2canvas(el,{
+      backgroundColor:'#111827', scale:2, useCORS:true,
+      scrollY:0, windowWidth:el.scrollWidth+40
+    }).then(function(canvas){
+      btns.forEach(function(b){b.style.display='';});
+      var link=document.createElement('a');
+      var fecha=new Date().toISOString().slice(0,10).replace(/-/g,'');
+      link.download='Municipios_Alumbrado_'+fecha+'.png';
+      link.href=canvas.toDataURL('image/png');
+      link.click();
+    });
+  }
+
+  // ── HELPER DATOS FILTRADOS MUNICIPIOS ──
+  function getMunSrc(){
+    var src=RAW.municipios.map(function(m){return Object.assign({},m);});
+    if(fProv) src=src.filter(function(m){return m.provincia===fProv;});
+    if(fMun)  src=src.filter(function(m){return m.municipio===fMun;});
+    return src;
+  }
+
+  document.addEventListener('DOMContentLoaded', function(){
   onProvChange(); updateKPIs(); updateCharts(); renderProvTable(); renderMunTable();
 });
 </script>
