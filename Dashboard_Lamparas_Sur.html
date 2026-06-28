@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard Lamparas - Region Sur</title>
+<title>EDESUR Dominicana &#8211; Sistema de Alumbrado P&#250;blico</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -21,10 +21,10 @@ header{background:linear-gradient(135deg,#0a1a2e 0%,#163358 50%,#0a1a2e 100%);
   display:flex;align-items:center;justify-content:space-between;
   position:sticky;top:0;z-index:300;box-shadow:0 4px 24px rgba(0,0,0,.6);}
 .logo{display:flex;align-items:center;gap:14px;}
-.logo-icon{width:44px;height:44px;background:linear-gradient(135deg,var(--accent),#1d6fbf);
-  border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;}
+.logo-icon{width:auto;height:58px;background:none;
+  border-radius:8px;display:flex;align-items:center;justify-content:center;overflow:hidden;}
 header h1{font-size:1.22rem;font-weight:700;color:#fff;}
-header p{font-size:.73rem;color:var(--muted);margin-top:2px;}
+header p{font-size:1.1rem;color:var(--muted);margin-top:3px;font-weight:500;}
 .hbadges{display:flex;gap:8px;flex-wrap:wrap;}
 .hbadge{padding:4px 12px;border-radius:20px;font-size:.7rem;font-weight:600;}
 .hb1{background:rgba(59,158,255,.15);border:1px solid var(--accent);color:var(--accent);}
@@ -107,10 +107,10 @@ footer{text-align:center;padding:16px;color:var(--muted);font-size:.7rem;border-
 <body>
 <header>
   <div class="logo">
-    <div class="logo-icon">&#128161;</div>
+    <div class="logo-icon"><img src="data:image/png;base64,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" alt="EDESUR" style="height:58px;width:auto;display:block;border-radius:6px;"/></div>
     <div>
-      <h1>Dashboard Lamparas &#8211; Region Sur</h1>
-      <p>EDESUR Dominicana, S.A. &#183; Alumbrado Publico &#183; Republica Dominicana</p>
+      <h1>EDESUR Dominicana</h1>
+      <p>Sistema de Alumbrado P&#250;blico</p>
     </div>
   </div>
   <div class="hbadges">
@@ -227,8 +227,8 @@ footer{text-align:center;padding:16px;color:var(--muted);font-size:.7rem;border-
     </div>
     <div class="tscroll"><table>
       <thead><tr>
-        <th onclick="sortMun('municipio')">Municipio &#8645;</th>
         <th onclick="sortMun('provincia')">Provincia &#8645;</th>
+        <th onclick="sortMun('municipio')">Municipio &#8645;</th>
         <th onclick="sortMun('total')">Total &#8645;</th>
         <th onclick="sortMun('operativas')" style="background:rgba(34,197,94,.12);color:#4ade80;">OPERATIVAS &#8645;</th>
         <th onclick="sortMun('apagada')">Apagada &#8645;</th>
@@ -560,8 +560,8 @@ function renderMunTable(){
   });
   document.getElementById('mun-count').textContent = src.length+' municipios';
   document.getElementById('mun-tbody').innerHTML = src.map(function(m){
-    return '<tr><td><strong>'+m.municipio+'</strong></td>'
-      +'<td>'+m.provincia+'</td>'
+    return '<tr><td>'+m.provincia+'</td>'
+      +'<td><strong>'+m.municipio+'</strong></td>'
       +'<td>'+fmt(m.total)+'</td>'
       +'<td style="background:rgba(34,197,94,.08);"><strong><span class="bl">'+fmt(m.operativas)+'</span></strong></td>'
       +'<td><span class="br">'+fmt(m.apagada)+'</span></td>'
@@ -579,7 +579,7 @@ function renderMunTable(){
   },{total:0,enc:0,ap:0,no:0,su:0,nu:0,op:0,led:0});
   const tp = t.total?+(100*t.op/t.total).toFixed(1):0;
   document.getElementById('mun-tfoot').innerHTML =
-    '<td>TOTAL</td><td>&#8212;</td><td>'+fmt(t.total)+'</td>'
+    '<td>&#8212;</td><td>TOTAL</td><td>'+fmt(t.total)+'</td>'
     +'<td style="background:rgba(34,197,94,.08);"><strong>'+fmt(t.op)+'</strong></td>'
     +'<td>'+fmt(t.ap)+'</td>'
     +'<td>'+fmt(t.no)+'</td><td>'+fmt(t.su)+'</td><td>'+fmt(t.nu)+'</td>'
@@ -636,12 +636,12 @@ function abrirMapa(){
 // ── EXPORT EXCEL ──
   function exportMunExcel(){
     var src = getMunSrc();
-    var cols = ['Municipio','Provincia','Total','OPERATIVAS','Apagada','Normalizada','Sustituida','Nueva Inst.','% Operativ.','LED','% LED'];
+    var cols = ['Provincia','Municipio','Total','OPERATIVAS','Apagada','Normalizada','Sustituida','Nueva Inst.','% Operativ.','LED','% LED'];
     var rows = [cols];
     src.forEach(function(m){
       var op = m.encendida+m.normalizada+m.sustituida+m.nueva;
       rows.push([
-        m.municipio, m.provincia, m.total, op,
+        m.provincia, m.municipio, m.total, op,
         m.apagada, m.normalizada, m.sustituida, m.nueva,
         m.total?+(100*op/m.total).toFixed(1):0,
         m.led,
